@@ -22,13 +22,13 @@ var tPadLeft = 40;
 
 // Create the actual SVG canvas for the graph
 // ====================================
-var svg = d3.select(".chart")
+var svg = d3.select("#scatter")
   .append("svg")
   .attr("width", width)
-  .attr("height", height);
-
+  .attr("height", height)
+  .attr("class", "chart");
   var chartGroup = svg.append("g")
-  .attr("transform", `translate(${margin.left}, ${margin.top})`);
+  .attr("transform", `translate(${tPadLeft}, ${tPadBot})`);
 
 
 // Section 2:  Import the .csv file.
@@ -36,7 +36,7 @@ var svg = d3.select(".chart")
 // This data file includes state-by-state demographic data from the US Census and measurements from health risks obtained by the 
 //        Behavioral Risk Factor Surveillance System.
 // Import our CSV data with d3's .csv import method.
-d3.csv("assets/data/data.csv").then(function(data) {
+d3.csv("assets/data/data.csv").then(function(theData) {
   // Visualize the data
   // visualize(data);
 
@@ -75,8 +75,9 @@ d3.csv("assets/data/data.csv").then(function(data) {
     .attr("fill", "pink")
     .attr("opacity", ".5");
 
-     var toolTip = d3.tip()
-      .attr("class", "tooltip")
+     var toolTip = d3
+      .tip()
+      .attr("class", "d3-tip")
       .offset([80, -60])
       .html(function(d) {
         return (`${d.abbr}<br>Healthcare: ${d.healthcare}<br>Obesity: ${d.obesity}`);
@@ -94,19 +95,21 @@ d3.csv("assets/data/data.csv").then(function(data) {
 
       chartGroup.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left + 40)
+      .attr("y", 0 - tPadLeft + 40)
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("class", "axisText")
       .text("Obesity");
 
     chartGroup.append("text")
-      .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+      .attr("transform", `translate(${width / 2}, ${height + tPadBot + 30})`)
       .attr("class", "axisText")
       .text("Healthcare");
-  }.catch(function(error) {
+  }).catch(function(error) {
     console.log(error);
-  };
+  });
+
+
 
 
 
