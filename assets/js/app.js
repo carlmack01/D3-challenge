@@ -5,20 +5,34 @@
 // Before we code any data visualizations, we need to at least set up the width, height and margins of the graph.
 
 // Grab the width of the containing box
-var width = parseInt(d3.select("#scatter").style("width"));
+// var width = parseInt(d3.select("#scatter").style("width"));
 
-// Designate the height of the graph
-var height = width - width / 3.9;
+// // Designate the height of the graph
+// var height = width - width / 3.9;
 
-// Margin spacing for graph
-var margin = 20;
+// // Margin spacing for graph
+// var margin = 20;
 
-// space for placing words
-var labelArea = 110;
+// // space for placing words
+// var labelArea = 110;
 
-// padding for the text at the bottom and left axes
-var tPadBot = 40;
-var tPadLeft = 40;
+// // padding for the text at the bottom and left axes
+// var tPadBot = 40;
+// var tPadLeft = 40;
+
+var svgWidth = 960;
+var svgHeight = 500;
+var margin = {
+  top: 20,
+  right: 40,
+  bottom: 60,
+  left: 100
+};
+var width = svgWidth - margin.left - margin.right;
+var height = svgHeight - margin.top - margin.bottom;
+console.log(height);
+console.log(width);
+
 
 // Create the actual SVG canvas for the graph
 // ====================================
@@ -27,9 +41,13 @@ var svg = d3.select("#scatter")
   .attr("width", width)
   .attr("height", height)
   .attr("class", "chart");
-  var chartGroup = svg.append("g")
-  .attr("transform", `translate(${tPadLeft}, ${tPadBot})`);
+  
+  // var chartGroup = svg.append("g")
+  // .attr("transform", `translate(${tPadLeft}, ${tPadBot})`);
+var chartGroup = svg.append("g")
+  .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+console.log(chartGroup)
 
 // Section 2:  Import the .csv file.
 // ====================================
@@ -46,7 +64,7 @@ d3.csv("assets/data/data.csv").then(function(theData) {
         });
 
  var xLinearScale = d3.scaleLinear()
-      .domain([20, d3.max(theData, d => d.healthcare)])
+      .domain([0, d3.max(theData, d => d.healthcare)])
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
@@ -55,14 +73,15 @@ d3.csv("assets/data/data.csv").then(function(theData) {
 
     // Step 3: Create axis functions
     // ==============================
-    var bottomAxis = d3.axisBottom(xLinearScale);
+    var bottomAxis = d3.axisBottom(xLinearScale).ticks(10);
     var leftAxis = d3.axisLeft(yLinearScale);
 
     chartGroup.append("g")
-      .attr("transform", `translate(0, ${height})`)
+      .attr("transform", `translate(0, 382)`)
       .call(bottomAxis);
 
     chartGroup.append("g")
+      // .attr("transform", `translate(${width}, 0)`)
       .call(leftAxis);
 
     var circlesGroup = chartGroup.selectAll("circle")
@@ -95,14 +114,14 @@ d3.csv("assets/data/data.csv").then(function(theData) {
 
       chartGroup.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - tPadLeft + 40)
+      .attr("y", 0 - margin.left + 40)
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("class", "axisText")
       .text("Obesity");
 
     chartGroup.append("text")
-      .attr("transform", `translate(${width / 2}, ${height + tPadBot + 30})`)
+      .attr("transform", `translate(${width / 2}, ${height + margin.bottom + 30})`)
       .attr("class", "axisText")
       .text("Healthcare");
   }).catch(function(error) {
