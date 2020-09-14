@@ -1,25 +1,3 @@
-// D3 Homework starter file
-
-// Section 1: Pre-Data Setup
-// ===========================
-// Before we code any data visualizations, we need to at least set up the width, height and margins of the graph.
-
-// Grab the width of the containing box
-// var width = parseInt(d3.select("#scatter").style("width"));
-
-// // Designate the height of the graph
-// var height = width - width / 3.9;
-
-// // Margin spacing for graph
-// var margin = 20;
-
-// // space for placing words
-// var labelArea = 110;
-
-// // padding for the text at the bottom and left axes
-// var tPadBot = 40;
-// var tPadLeft = 40;
-
 var svgWidth = 960;
 var svgHeight = 500;
 var margin = {
@@ -34,29 +12,18 @@ console.log(height);
 console.log(width);
 
 
-// Create the actual SVG canvas for the graph
-// ====================================
 var svg = d3.select("#scatter")
   .append("svg")
   .attr("width", width)
   .attr("height", height)
   .attr("class", "chart");
   
-  // var chartGroup = svg.append("g")
-  // .attr("transform", `translate(${tPadLeft}, ${tPadBot})`);
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 console.log(chartGroup)
 
-// Section 2:  Import the .csv file.
-// ====================================
-// This data file includes state-by-state demographic data from the US Census and measurements from health risks obtained by the 
-//        Behavioral Risk Factor Surveillance System.
-// Import our CSV data with d3's .csv import method.
 d3.csv("assets/data/data.csv").then(function(theData) {
-  // Visualize the data
-  // visualize(data);
 
   theData.forEach(function(data) {
       data.healthcare = +data.healthcare;
@@ -71,8 +38,6 @@ d3.csv("assets/data/data.csv").then(function(theData) {
       .domain([0, d3.max(theData, d => d.obesity)])
       .range([height, 0]);
 
-    // Step 3: Create axis functions
-    // ==============================
     var bottomAxis = d3.axisBottom(xLinearScale).ticks(10);
     var leftAxis = d3.axisLeft(yLinearScale);
 
@@ -81,7 +46,6 @@ d3.csv("assets/data/data.csv").then(function(theData) {
       .call(bottomAxis);
 
     chartGroup.append("g")
-      // .attr("transform", `translate(${width}, 0)`)
       .call(leftAxis);
 
     var circlesGroup = chartGroup.selectAll("circle")
@@ -107,7 +71,7 @@ d3.csv("assets/data/data.csv").then(function(theData) {
       circlesGroup.on("click", function(data) {
       toolTip.show(data, this);
     })
-      // onmouseout event
+  
       .on("mouseout", function(data, index) {
         toolTip.hide(data);
       });
@@ -127,51 +91,3 @@ d3.csv("assets/data/data.csv").then(function(theData) {
   }).catch(function(error) {
     console.log(error);
   });
-
-
-
-
-
-// Section 3. Create our visualization function
-// ====================================
-// function visualize(theData) {
-// // We called a "visualize" function on the data obtained with d3's .csv method.
- 
-
-//     // Step 8: Create event listeners to display and hide the tooltip
-//     // ==============================
- 
-  // 3.1 Create scale functions
-  // ==============================
-
-
-  // 3.2 Create axis functions
-  // ==============================
-
-
-  // 3.3 Append Axes to the chart
-  // ==============================
-
-
-  // 3.4 Create Circles
-  // ==============================
-
-  // 3.4.1 Code here to add abbrevations to the circles
-  // ===================================================
-  // With the circles on our graph, we need matching labels. Let's grab the state abbreviations from our data
-  // and place them in the center of our dots.
-
-
-  // 3.5 Tool tip and tool tip event listeners
-  // ==============================
-
-
-  // 3.6 Create axes labels
-  // ==============================
-  
-
-  // 3.7 Code here to add abbrevations to the circles
-  // ===================================================
-
-
-// @TODO: YOUR CODE HERE!
